@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Controle Financeiro</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:#0a1628;color:#e8f0fe;min-height:100vh;padding:12px}
+h1{font-size:18px;margin-bottom:4px}
+.sub{color:#7a9cbf;font-size:12px;margin-bottom:14px}
+.tabs{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px}
+.tab{background:#112036;border:1px solid #1d3352;color:#7a9cbf;padding:8px 13px;border-radius:8px;cursor:pointer;font-weight:700;font-size:12px}
+.tab.on{background:#1b3a60;color:#e8f0fe;border-color:#4a8fd4}
+.pnl{display:none}.pnl.on{display:block}
+.card{background:#0e1d33;border:1px solid #1d3352;border-radius:12px;padding:14px;margin-bottom:10px}
+h2{font-size:13px;font-weight:800;margin-bottom:9px;color:#b8d4f0}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:8px}
+input,select,textarea{background:#07111f;color:#e8f0fe;border:1px solid #1d3352;border-radius:8px;padding:8px 10px;font-size:12px;outline:none}
+label{font-size:11px;font-weight:700;color:#90b0cc;display:block;margin-bottom:3px}
+.btn{background:#1b3a60;border:1px solid #4a8fd4;color:#e8f0fe;border-radius:8px;padding:8px 13px;cursor:pointer;font-weight:700;font-size:12px}
+.btn.r{background:#2a1010;border-color:#8a3a3a;color:#f09090}
+.btn.v{background:#1e1030;border-color:#7050c0;color:#c0a0f0}
+.btn.g{background:#102a1c;border-color:#3a8a5a;color:#7dd4a0}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:10px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.fg{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;margin-bottom:10px}
+.f3{grid-column:span 3}.f4{grid-column:span 4}.f6{grid-column:span 6}.f12{grid-column:span 12}
+.kc{background:#0e1d33;border:1px solid #1d3352;border-radius:10px;padding:12px}
+.kc.y{border-color:#b08020;background:#181200}
+.kc.gr{border-color:#3a8a5a;background:#0a1810}
+.kc.re{border-color:#8a3a3a;background:#180808<searching_in_web>
+</searching_in_web>
+
+O erro é claro: **o `app.js` não está sendo carregado**. O `index.html` chama `render()` mas o navegador não encontra o arquivo `app.js`.
+
+## Causa mais provável
+
+Os dois arquivos **não estão na mesma pasta**, ou o `app.js` está com nome diferente.
+
+---
+
+## Solução mais simples
+
+**Coloque tudo em um único arquivo `index.html`**, sem depender do `app.js` externo.
+
+Crie um arquivo `index.html` com este conteúdo completo:
+
+> **Atenção:** este arquivo funciona sozinho, sem precisar de `app.js`.
+
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Controle Financeiro</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:#0a1628;color:#e8f0fe;min-height:100vh;padding:12px}
+h1{font-size:18px;margin-bottom:4px}
+.sub{color:#7a9cbf;font-size:12px;margin-bottom:14px}
+.tabs{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px}
+.tab{background:#112036;border:1px solid #1d3352;color:#7a9cbf;padding:8px 13px;border-radius:8px;cursor:pointer;font-weight:700;font-size:12px}
+.tab.on{background:#1b3a60;color:#e8f0fe;border-color:#4a8fd4}
+.pnl{display:none}.pnl.on{display:block}
+.card{background:#0e1d33;border:1px solid #1d3352;border-radius:12px;padding:14px;margin-bottom:10px}
+h2{font-size:13px;font-weight:800;margin-bottom:9px;color:#b8d4f0}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:8px}
+input,select,textarea{background:#07111f;color:#e8f0fe;border:1px solid #1d3352;border-radius:8px;padding:8px 10px;font-size:12px;outline:none}
+label{font-size:11px;font-weight:700;color:#90b0cc;display:block;margin-bottom:3px}
+.btn{background:#1b3a60;border:1px solid #4a8fd4;color:#e8f0fe;border-radius:8px;padding:8px 13px;cursor:pointer;font-weight:700;font-size:12px}
+.btn.g{background:#102a1c;border-color:#3a8a5a;color:#7dd4a0}
+.btn.r{background:#2a1010;border-color:#8a3a3a;color:#f09090}
+.btn.v{background:#1e1030;border-color:#7050c0;color:#c0a0f0}
+.btn.w{background:#201800;border-color:#b08020;color:#f0c040}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:10px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.fg{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;margin-bottom:10px}
+.f3{grid-column:span 3}.f4{grid-column:span 4}.f6{grid-column:span 6}.f12{grid-column:span 12}
+.kc{background:#0e1d33;border:1px solid #1d3352;border-radius:10px;padding:12px}
+.kc.y{border-color:#b08020;background:#181200}
+.kc.gr{border-color:#3a8a5a;background:#0a1810}
+.kc.re{border-color:#8a3a3a;background:#180808}
+.kc.pu{border-color:#7050c0;background:#100818}
+.kl{color:#7a9cbf;font-size:10px;margin-bottom:3px}
+.kv{font-size:17px;font-weight:900}
+.kh{color:#7a9cbf;font-size:10px;margin-top:3px}
+.fat{background:#181200;border:2px solid #b08020;border-radius:12px;padding:14px;margin-bottom:10px}
+.fat h2{color:#f0c040;margin-bottom:9px}
+.fat-tot{text-align:center;background:#201a00;border-radius:8px;padding:12px;margin-bottom:10px}
+.fat-tot .fv{font-size:26px;font-weight:900;color:#f0c040}
+.fat-tot .fi{font-size:11px;color:#7a9cbf;margin-top:3px}
+.fat-gr{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.fdl{font-size:10px;color:#7a9cbf;margin-bottom:2px}
+.fdv{font-size:13px;font-weight:700}
+.br-row{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.br-lbl{font-size:11px;width:135px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}
+.br-trk{flex:1;height:8px;background:#07111f;border-radius:99px;overflow:hidden}
+.br-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#4a8fd4,#50c8b0)}
+.br-fill.i{background:linear-gradient(90deg,#9060e0,#50c8b0)}
+.br-val{font-size:10px;color:#7a9cbf;width:88px;text-align:right}
+.tw{overflow-x:auto;border-radius:8px;border:1px solid #1d3352}
+table{width:100%;border-collapse:collapse;font-size:11px;min-width:500px}
+th{background:#07111f;color:#7a9cbf;font-weight:700;padding:8px;text-align:left;position:sticky;top:0}
+td{padding:7px 8px;border-bottom:1px solid #1d3352;vertical-align:middle}
+tr:hover td{background:#0e1d33}
+.tr{text-align:right}
+.eb{background:#1b3a60;border:1px solid #4a8fd4;color:#80b8f0;cursor:pointer;font-size:10px;padding:3px 7px;border-radius:5px;font-weight:700}
+.db{background:none;border:none;color:#f09090;cursor:pointer;font-size:13px;font-weight:900;padding:2px 5px}
+.note{font-size:11px;color:#7a9cbf;line-height:1.5}
+.aviso{background:#102010;border:1px solid #4a7a2a;border-radius:8px;padding:8px 12px;font-size:12px;color:#90c060;margin-bottom:10px;display:none}
+.catline{display:flex;justify-content:space-between;align-items:center;gap:8px;background:#07111f;border:1px solid #1d3352;border-radius:8px;padding:8px 10px;margin-bottom:6px}
+@media(max-width:800px){.g4{grid-template-columns:1fr 1fr}.g2{grid-template-columns:1fr}.fat-gr{grid-template-columns:1fr 1fr}.f3,.f4,.f6{grid-column:span 12}}
+@media(max-width:500px){.g4{grid-template-columns:1fr}.fat-gr{grid-template-columns:1fr}.tabs{display:grid;grid-template-columns:1fr 1fr 1fr}}
+</style>
+</head>
+<body>
+<h1>Controle Financeiro Pessoal</h1>
+<div class="sub">Gastos · Receitas · Fatura · Categorias · Backup</div>
+
+<div class="tabs">
+  <button class="tab on" onclick="goTab('t1',this)">Resumo</button>
+  <button class="tab" onclick="goTab('t2',this)">Fatura</button>
+  <button class="tab" onclick="goTab('t3',this)">Gastos</button>
+  <button class="tab" onclick="goTab('t4',this)">Receitas</button>
+  <button class="tab" onclick="goTab('t5',this)">Categorias</button>
+  <button class="tab" onclick="goTab('t6',this)">Backup</button>
+</div>
+
+<!-- RESUMO -->
+<div class="pnl on" id="t1">
+  <div class="row">
+    <select id="sumMonth" onchange="render()"></select>
+    <input id="sumSearch" type="text" placeholder="Buscar..." oninput="render()" style="flex:1;max-width:220px"/>
+  </div>
+  <div class="g4" id="kpis"></div>
+  <div id="sumInvoice"></div>
+  <div class="g2">
+    <div class="card"><h2>Últimos gastos</h2>
+      <div class="tw"><table><thead><tr><th>Data</th><th>Descrição</th><th>Categoria</th><th class="tr">Valor</th></tr></thead><tbody id="sumExpT"></tbody></table></div>
+    </div>
+    <div class="card"><h2>Últimas receitas</h2>
+      <div class="tw"><table><thead><tr><th>Data</th><th>Descrição</th><th>Categoria</th><th class="tr">Valor</th></tr></thead><tbody id="sumIncT"></tbody></table></div>
+    </div>
+  </div>
+</div>
+
+<!-- FATURA -->
+<div class="pnl" id="t2">
+  <div class="row">
+    <label style="margin:0;color:#7a9cbf">Mês:</label>
+    <select id="invMonth" onchange="render()"></select>
+  </div>
+  <div id="invSummary"></div>
+  <div class="card"><h2>Lançamentos da fatura</h2>
+    <div class="row"><input id="invSearch" type="text" placeholder="Buscar..." oninput="render()" style="flex:1;max-width:260px"/></div>
+    <div class="tw"><table><thead><tr><th>Data</th><th>Descrição</th><th>Categoria</th><th>Sub.</th><th class="tr">Valor</th></tr></thead><tbody id="invT"></tbody></table></div>
+  </div>
+</div>
+
+<!-- GASTOS -->
+<div class="pnl" id="t3">
+  <div class="card">
+    <h2 id="expTitle">Novo Gasto</h2>
+    <div class="aviso" id="expAviso">Editando gasto — altere e clique em Salvar</div>
+    <form onsubmit="saveExpense(event)">
+      <div class="fg">
+        <div class="f3"><label>Data</label><input type="date" id="expDate" required/></div>
+        <div class="f3"><label>Valor R$</label><input type="number" id="expValue" step="0.01" placeholder="0,00" required/></div>
+        <div class="f6"><label>Descrição</label><input type="text" id="expDesc" placeholder="Ex.: Mercado..." required/></div>
+        <div class="f4"><label>Categoria</label><select id="expCat" required></select></div>
+        <div class="f4"><label>Subcategoria</label><input type="text" id="expSub" placeholder="Opcional"/></div>
+        <div class="f4"><label>Tipo</label>
+          <select id="expType">
+            <option value="cartao">Cartão</option>
+            <option value="pix">PIX</option>
+            <option value="debito">Débito</option>
+            <option value="dinheiro">Dinheiro</option>
+            <option value="fixo">Fixo/Boleto</option>
+            <option value="avulso">Avulso</option>
+          </select>
+        </div>
+        <div class="f8"><label>Observação</label><input type="text" id="expNote" placeholder="detalhe..."/></div>
+        <div class="f12 row">
+          <button class="btn" type="submit">Salvar gasto</button>
+          <button class="btn r" type="button" onclick="cancelExpense()">Cancelar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="card"><h2>Todos os gastos</h2>
+    <div class="row">
+      <select id="expMonth" onchange="render()"></select>
+      <select id="expCatF" onchange="render()"><option value="">Todas categorias</option></select>
+      <select id="expTypeF" onchange="render()">
+        <option value="">Todos os tipos</option>
+        <option value="cartao">Cartão</option>
+        <option value="pix">PIX</option>
+        <option value="debito">Débito</option>
+        <option value="dinheiro">Dinheiro</option>
+        <option value="fixo">Fixo/Boleto</option>
+        <option value="avulso">Avulso</option>
+      </select>
+      <input id="expSearch" type="text" placeholder="Buscar..." oninput="render()" style="flex:1;max-width:200px"/>
+    </div>
+    <div class="tw"><table><thead><tr><th>Data</th><th>Descrição</th><th>Categoria</th><th>Sub.</th><th>Tipo</th><th>Obs.</th><th class="tr">Valor</th><th>Ações</th></tr></thead><tbody id="expT"></tbody></table></div>
+  </div>
+</div>
+
+<!-- RECEITAS -->
+<div class="pnl" id="t4">
+  <div class="card">
+    <h2 id="incTitle">Nova Receita</h2>
+    <div class="aviso" id="incAviso">Editando receita — altere e clique em Salvar</div>
+    <form onsubmit="saveIncome(event)">
+      <div class="fg">
+        <div class="f3"><label>Data</label><input type="date" id="incDate" required/></div>
+        <div class="f3"><label>Valor R$</label><input type="number" id="incValue" step="0.01" placeholder="0,00" required/></div>
+        <div class="f6"><label>Descrição</label><input type="text" id="incDesc" placeholder="Ex.: Salário..." required/></div>
+        <div class="f4"><label>Categoria</label><select id="incCat" required></select></div>
+        <div class="f4"><label>Subcategoria</label><input type="text" id="incSub" placeholder="Opcional"/></div>
+        <div class="f8"><label>Observação</label><input type="text" id="incNote" placeholder="detalhe..."/></div>
+        <div class="f12 row">
+          <button class="btn v" type="submit">Salvar receita</button>
+          <button class="btn r" type="button" onclick="cancelIncome()">Cancelar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="card"><h2>Todas as receitas</h2>
+    <div class="row">
+      <select id="incMonth" onchange="render()"></select>
+      <select id="incCatF" onchange="render()"><option value="">Todas categorias</option></select>
+      <input id="incSearch" type="text" placeholder="Buscar..." oninput="render()" style="flex:1;max-width:200px"/>
+    </div>
+    <div class="tw"><table><thead><tr><th>Data</th><th>Descrição</th><th>Categoria</th><th>Sub.</th><th>Obs.</th><th class="tr">Valor</th><th>Ações</th></tr></thead><tbody id="incT"></tbody></table></div>
+  </div>
+</div>
+
+<!-- CATEGORIAS -->
+<div class="pnl" id="t5">
+  <div class="card"><h2>Categorias de gastos</h2>
+    <div class="row" style="margin-bottom:10px">
+      <input type="text" id="newExpCat" placeholder="Nova categoria..." style="flex:1;max-width:260px"/>
+      <button class="btn" type="button" onclick="addExpCat()">Adicionar</button>
+    </div>
+    <div id="expCatList"></div>
+  </div>
+  <div class="card"><h2>Categorias de receitas</h2>
+    <div class="row" style="margin-bottom:10px">
+      <input type="text" id="newIncCat" placeholder="Nova categoria..." style="flex:1;max-width:260px"/>
+      <button class="btn v" type="button" onclick="addIncCat()">Adicionar</button>
+    </div>
+    <div id="incCatList"></div>
+  </div>
+</div>
+
+<!-- BACKUP -->
+<div class="pnl" id="t6">
+  <div class="card"><h2>Backup</h2>
+    <div class="row" style="margin-bottom:12px">
+      <button class="btn" type="button" onclick="exportJSON()">Exportar JSON</button>
+      <button class="btn w" type="button" onclick="restoreSeed()">Restaurar dados</button>
+      <button class="btn r" type="button" onclick="clearAll()">Limpar tudo</button>
+    </div>
+    <label>Importar JSON</label>
+    <input type="file" id="jsonFile" accept=".json" style="display:block;margin:6px 0;background:transparent;border:none;padding:0;color:#e8f0fe"/>
+    <button class="btn" type="button" onclick="importJSON()">Importar JSON</button>
+    <div class="note" style="margin-top:10px" id="storageInfo"></div>
+  </div>
+</div>
+
+<script>
+var SK = 'cfin_v2';
+
+var DEFAULT_EXP_CATS = ['Casa e utilidades','Educação','Transporte e veículos','Saúde','Restaurantes e delivery','Lazer e entretenimento','Mercado e hortifruti','Assinaturas','Viagens','Outros'];
+var DEFAULT_INC_CATS = ['Salário','Freelance','Aluguel recebido','Investimentos','Reembolso','Bônus','Outros'];
+
+var SEED_EXP = [
+  {id:'e01',date:'2026-04-03',amount:20.90,desc:'Netflix',cat:'Assinaturas',sub:'Streaming',type:'cartao',note:''},
+  {id:'e02',date:'2026-04-12',amount:945.00,desc:'Azul Linhas Aéreas',cat:'Viagens',sub:'Passagem',type:'cartao',note:''},
+  {id:'e03',date:'2026-04-20',amount:369.60,desc:'Evenyx',cat:'Lazer e entretenimento',sub:'Evento',type:'cartao',note:''},
+  {id:'e04',date:'2026-04-30',amount:307.80,desc:'Posto Petroshop',cat:'Transporte e veículos',sub:'Combustível',type:'cartao',note:''},
+  {id:'e05',date:'2026-05-06',amount:945.58,desc:'Mix Mateus',cat:'Mercado e hortifruti',sub:'Supermercado',type:'cartao',note:''},
+  {id:'e06',date:'2026-05-07',amount:1185.00,desc:'BandaLele Eventos',cat:'Lazer e entretenimento',sub:'Evento',type:'cartao',note:''},
+  {id:'e07',date:'2026-05-11',amount:109.62,desc:'CELPE',cat:'Casa e utilidades',sub:'Energia',type:'cartao',note:''},
+  {id:'e08',date:'2026-05-17',amount:83.03,desc:'iFood',cat:'Restaurantes e delivery',sub:'Delivery',type:'cartao',note:''},
+  {id:'e09',date:'2026-05-30',amount:307.80,desc:'Combustível maio',cat:'Transporte e veículos',sub:'Posto',type:'cartao',note:''},
+  {id:'e10',date:'2026-06-03',amount:20.90,desc:'Netflix',cat:'Assinaturas',sub:'Streaming',type:'cartao',note:''},
+  {id:'e11',date:'2026-06-03',amount:174.47,desc:'YelumSeg Parc1',cat:'Transporte e veículos',sub:'Seguro',type:'cartao',note:''},
+  {id:'e12',date:'2026-06-09',amount:106.50,desc:'ChatGPT',cat:'Assinaturas',sub:'IA',type:'cartao',note:''},
+  {id:'e13',date:'2026-06-09',amount:542.81,desc:'Rafael Francisco',cat:'Outros',sub:'',type:'cartao',note:''},
+  {id:'e14',date:'2026-06-10',amount:611.11,desc:'Escola Santa Maria',cat:'Educação',sub:'Fatura',type:'cartao',note:''},
+  {id:'e15',date:'2026-06-16',amount:1215.00,desc:'Escola Santa Maria mensalidade',cat:'Educação',sub:'Mensalidade',type:'cartao',note:''}
+];
+
+var SEED_INC = [
+  {id:'i01',date:'2026-04-05',amount:25000.00,desc:'Salário abril',cat:'Salário',sub:'CLT',note:''},
+  {id:'i02',date:'2026-04-20',amount:3500.00,desc:'Aluguel Segóvia',cat:'Aluguel recebido',sub:'Imóvel',note:''},
+  {id:'i03',date:'2026-05-05',amount:25000.00,desc:'Salário maio',cat:'Salário',sub:'CLT',note:''},
+  {id:'i04',date:'2026-05-20',amount:3500.00,desc:'Aluguel Segóvia',cat:'Aluguel recebido',sub:'Imóvel',note:''},
+  {id:'i05',date:'2026-06-05',amount:25000.00,desc:'Salário junho',cat:'Salário',sub:'CLT',note:''},
+  {id:'i06',date:'2026-06-20',amount:3500.00,desc:'Aluguel Segóvia',cat:'Aluguel recebido',sub:'Imóvel',note:''}
+];
+
+var STATE = {
+  expenses: [],
+  incomes: [],
+  expCats: [],
+  incCats: []
+};
+
+var editExpId = null;
+var editIncId = null;
+
+function clone(o) { return JSON.parse(JSON.stringify(o)); }
+function uid() { return 'x' + Date.now().toString(36) + Math.random().toString(36).slice(2,5); }
+function money(v) { return new Intl.NumberFormat('pt-BR', {style:'currency', currency:'BRL'}).format(+v || 0); }
+function fmtDate(s) {
+  if (!s) return '—';
+  var p = String(s).slice(0, 10).split('-');
+  return p.length === 3 ? p[2] + '/' + p[1] + '/' + p[0] : s;
+}
+function monthKey(d) { return String(d || '').slice(0, 7); }
+function monthLabel(k) {
+  if (!k) return 'Todos';
+  var p = k.split('-');
+  var names = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+  return names[+p[1] - 1] + '/' + p[0];
+}
+function currentMonth() {
+  var d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+}
+function today() {
+  var d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+function sumAmounts(arr) {
+  return arr.reduce(function(t, x) { return t + (+x.amount || 0); }, 0);
+}
+function groupByCategory(arr) {
+  return arr.reduce(function(m, x) {
+    m[x.cat] = (m[x.cat] || 0) + (+x.amount || 0);
+    return m;
+  }, {});
+}
+function uniqueMonths(arr) {
+  var s = {};
+  arr.forEach(function(x) { s[monthKey(x.date)] = 1; });
+  return Object.keys(s).sort();
+}
+function ge(id) { return document.getElementById(id); }
+function setHTML(id, h) { var e = ge(id); if (e) e.innerHTML = h; }
+
+function loadState() {
+  try {
+    var raw = localStorage.getItem(SK);
+    if (!raw) { STATE = freshState(); return; }
+    var p = JSON.parse(raw);
+    STATE = {
+      expenses: Array.isArray(p.expenses) && p.expenses.length ? p.expenses : clone(SEED_EXP),
+      incomes: Array.isArray(p.incomes) && p.incomes.length ? p.incomes : clone(SEED_INC),
+      expCats: Array.isArray(p.expCats) && p.expCats.length ? p.expCats : clone(DEFAULT_EXP_CATS),
+      incCats: Array.isArray(p.incCats) && p.incCats.length ? p.incCats : clone(DEFAULT_INC_CATS)
+    };
+  } catch(e) { STATE = freshState(); }
+}
+
+function freshState() {
+  return {
+    expenses: clone(SEED_EXP),
+    incomes: clone(SEED_INC),
+    expCats: clone(DEFAULT_EXP_CATS),
+    incCats: clone(DEFAULT_INC_CATS)
+  };
+}
+
+function saveState() {
+  try { localStorage.setItem(SK, JSON.stringify(STATE)); } catch(e) {}
+  updateInfo();
+}
+
+function updateInfo() {
+  var e = ge('storageInfo');
+  if (e) e.textContent = 'Gastos: ' + STATE.expenses.length + ' lançamentos · Receitas: ' + STATE.incomes.length + ' lançamentos';
+}
+
+function invoiceInfo(mk) {
+  var p = mk.split('-').map(Number);
+  var y = p[0], m = p[1];
+  var pm = m - 1, py = y;
+  if (pm < 1) { pm = 12; py--; }
+  var nm = m + 1, ny = y;
+  if (nm > 12) { nm = 1; ny++; }
+  function z(n) { return String(n).padStart(2, '0'); }
+  return {
+    open:  py + '-' + z(pm) + '-11',
+    close: y  + '-' + z(m)  + '-10',
+    post:  y  + '-' + z(m)  + '-11',
+    due:   y  + '-' + z(m)  + '-17',
+    next:  ny + '-' + z(nm) + '-10'
+  };
+}
+
+function invoiceRows(mk) {
+  var fi = invoiceInfo(mk);
+  return STATE.expenses.filter(function(e) {
+    return e.type === 'cartao' && e.date >= fi.open && e.date <= fi.close;
+  });
+}
+
+function fillMonthSelect(ids, months) {
+  var opts = '<option value="">Todos os meses</option>' +
+    months.map(function(m) { return '<option value="' + m + '">' + monthLabel(m) + '</option>'; }).join('');
+  ids.forEach(function(id) {
+    var el = ge(id);
+    if (!el) return;
+    var cur = el.value;
+    el.innerHTML = opts;
+    if (cur && months.indexOf(cur) >= 0) el.value = cur;
+    else if (months.length) el.value = months[months.length - 1];
+  });
+}
+
+function fillCatSelect(id, cats, withAll) {
+  var el = ge(id);
+  if (!el) return;
+  var cur = el.value;
+  el.innerHTML = (withAll ? '<option value="">Todas categorias</option>' : '') +
+    cats.map(function(c) { return '<option value="' + c + '">' + c + '</option>'; }).join('');
+  if (cur && cats.indexOf(cur) >= 0) el.value = cur;
+}
+
+function goTab(id, btn) {
+  document.querySelectorAll('.pnl').forEach(function(p) { p.classList.remove('on'); });
+  document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('on'); });
+  ge(id).classList.add('on');
+  btn.classList.add('on');
+}
+
+function render() {
+  var allMonths = uniqueMonths(STATE.expenses.concat(STATE.incomes));
+
+  fillMonthSelect(['sumMonth', 'expMonth', 'incMonth', 'invMonth'], allMonths);
+  fillCatSelect('expCat', STATE.expCats, false);
+  fillCatSelect('expCatF', STATE.expCats, true);
+  fillCatSelect('incCat', STATE.incCats, false);
+  fillCatSelect('incCatF', STATE.incCats, true);
+
+  var selMonth = ge('sumMonth') ? ge('sumMonth').value : '';
+  var selSearch = ge('sumSearch') ? (ge('sumSearch').value || '').toLowerCase().trim() : '';
+
+  function matchExp(e, month, cat, type, q) {
+    return (!month || monthKey(e.date) === month) &&
+           (!cat   || e.cat === cat) &&
+           (!type  || e.type === type) &&
+           (!q     || (e.desc + ' ' + e.cat + ' ' + (e.sub || '')).toLowerCase().indexOf(q) >= 0);
+  }
+  function matchInc(i, month, cat, q) {
+    return (!month || monthKey(i.date) === month) &&
+           (!cat   || i.cat === cat) &&
+           (!q     || (i.desc + ' ' + i.cat + ' ' + (i.sub || '')).toLowerCase().indexOf(q) >= 0);
+  }
+
+  var filtExp = STATE.expenses.filter(function(e) { return matchExp(e, selMonth, '', '', selSearch); });
+  var filtInc = STATE.incomes.filter(function(i) { return matchInc(i, selMonth, '', selSearch); });
+
+  var totExp = sumAmounts(filtExp);
+  var totInc = sumAmounts(filtInc);
+  var saldo = totInc - totExp;
+
+  var invMk = ge('invMonth') && ge('invMonth').value ? ge('invMonth').value : (selMonth || currentMonth());
+  var fi = invoiceInfo(invMk);
+  var invRows = invoiceRows(invMk);
+  var totInv = sumAmounts(invRows);
+
+  function kpi(label, value, hint, cls) {
+    return '<div class="kc ' + (cls || '') + '">' +
+      '<div class="kl">' + label + '</div>' +
+      '<div class="kv">' + value + '</div>' +
+      '<div class="kh">' + hint + '</div>' +
+      '</div>';
+  }
+
+  setHTML('kpis',
+    kpi('Gastos', money(totExp), selMonth ? monthLabel(selMonth) : 'Todo o histórico', 're') +
+    kpi('Receitas', money(totInc), selMonth ? monthLabel(selMonth) : 'Todo o histórico', 'pu') +
+    kpi('Saldo', money(saldo), saldo >= 0 ? 'Positivo ✓' : 'Negativo ✗', saldo >= 0 ? 'gr' : 're') +
+    kpi('Fatura do cartão', money(totInv), 'Vence ' + fmtDate(fi.due), 'y')
+  );
+
+  setHTML('sumInvoice',
+    '<div class="fat"><h2>Fatura do Cartão · ' + monthLabel(invMk) + '</h2>' +
+    '<div class="fat-tot"><div class="kl">Total da fatura</div><div class="fv">' + money(totInv) + '</div>' +
+    '<div class="fi">' + invRows.length + ' compras · Vence em ' + fmtDate(fi.due) + '</div></div>' +
+    '<div class="fat-gr">' +
+      '<div><div class="fdl">Abertura do ciclo</div><div class="fdv">' + fmtDate(fi.open) + '</div></div>' +
+      '<div><div class="fdl">Fechamento</div><div class="fdv">' + fmtDate(fi.close) + '</div></div>' +
+      '<div><div class="fdl">Postagem</div><div class="fdv">' + fmtDate(fi.post) + '</div></div>' +
+      '<div><div class="fdl">Vencimento</div><div class="fdv" style="color:#f0c040">' + fmtDate(fi.due) + '</div></div>' +
+      '<div><div class="fdl">Próx. fechamento</div><div class="fdv">' + fmtDate(fi.next) + '</div></div>' +
+      '<div><div class="fdl">Lançamentos</div><div class="fdv">' + invRows.length + ' compras</div></div>' +
+    '</div></div>'
+  );
+
+  var recentExp = filtExp.slice().sort(function(a,b){return a.date < b.date ? 1 : -1;}).slice(0, 6);
+  setHTML('sumExpT', recentExp.map(function(e) {
+    return '<tr><td>' + fmtDate(e.date) + '</td><td>' + e.desc + '</td><td>' + e.cat + '</td><td class="tr">' + money(e.amount) + '</td></tr>';
+  }).join('') || '<tr><td colspan="4" style="text-align:center;padding:12px;color:#7a9cbf">Nenhum gasto.</td></tr>');
+
+  var recentInc = filtInc.slice().sort(function(a,b){return a.date < b.date ? 1 : -1;}).slice(0, 6);
+  setHTML('sumIncT', recentInc.map(function(i) {
+    return '<tr><td>' + fmtDate(i.date) + '</td><td>' + i.desc + '</td><td>' + i.cat + '</td><td class="tr" style="color:#c0a0f0">' + money(i.amount) + '</td></tr>';
+  }).join('') || '<tr><td colspan="4" style="text-align:center;padding:12px;color:#7a9cbf">Nenhuma receita.</td></tr>');
+
+  var invSearch = ge('invSearch') ? (ge('invSearch').value || '').toLowerCase().trim() : '';
+  var invFilt = invRows.filter(function(e) {
+    return !invSearch || (e.desc + ' ' + e.cat).toLowerCase().indexOf(invSearch) >= 0;
+  }).sort(function(a,b){return a.date < b.date ? -1 : 1;});
+
+  setHTML('invSummary',
+    '<div class="fat"><h2>Fatura · ' + monthLabel(invMk) + ' · ' + money(totInv) +
+    ' <span style="font-size:11px;color:#7a9cbf">Vence ' + fmtDate(fi.due) + '</span></h2>' +
+    '<div class="fat-gr">' +
+      '<div><div class="fdl">Abertura</div><div class="fdv">' + fmtDate(fi.open) + '</div></div>' +
+      '<div><div class="fdl">Fechamento</div><div class="fdv">' + fmtDate(fi.close) + '</div></div>' +
+      '<div><div class="fdl">Postagem</div><div class="fdv">' + fmtDate(fi.post) + '</div></div>' +
+      '<div><div class="fdl">Vencimento</div><div class="fdv" style="color:#f0c040">' + fmtDate(fi.due) + '</div></div>' +
+      '<div><div class="fdl">Próx. fechamento</div><div class="fdv">' + fmtDate(fi.next) + '</div></div>' +
+      '<div><div class="fdl">Compras</div><div class="fdv">' + invRows.length + ' lançamentos</div></div>' +
+    '</div></div>'
+  );
+
+  setHTML('invT', invFilt.map(function(e) {
+    return '<tr><td>' + fmtDate(e.date) + '</td><td>' + e.desc + '</td><td>' + e.cat + '</td><td>' + (e.sub || '') + '</td><td class="tr">' + money(e.amount) + '</td></tr>';
+  }).join('') || '<tr><td colspan="5" style="text-align:center;padding:12px;color:#7a9cbf">Nenhuma compra neste ciclo.</td></tr>');
+
+  var eMon = ge('expMonth') ? ge('expMonth').value : '';
+  var eCat = ge('expCatF') ? ge('expCatF').value : '';
+  var eTyp = ge('expTypeF') ? ge('expTypeF').value : '';
+  var eSrc = ge('expSearch') ? (ge('expSearch').value || '').toLowerCase().trim() : '';
+  var expList = STATE.expenses.filter(function(e) {
+    return matchExp(e, eMon, eCat, eTyp, eSrc);
+  }).sort(function(a,b){return a.date < b.date ? 1 : -1;});
+
+  setHTML('expT', expList.map(function(e) {
+    return '<tr>' +
+      '<td>' + fmtDate(e.date) + '</td>' +
+      '<td>' + e.desc + '</td>' +
+      '<td>' + e.cat + '</td>' +
+      '<td>' + (e.sub || '') + '</td>' +
+      '<td>' + e.type + '</td>' +
+      '<td>' + (e.note || '') + '</td>' +
+      '<td class="tr">' + money(e.amount) + '</td>' +
+      '<td><button class="eb" onclick="editExpense(\'' + e.id + '\')">Editar</button> ' +
+           '<button class="db" onclick="deleteExpense(\'' + e.id + '\')">✕</button></td>' +
+      '</tr>';
+  }).join('') || '<tr><td colspan="8" style="text-align:center;padding:12px;color:#7a9cbf">Nenhum gasto.</td></tr>');
+
+  var iMon = ge('incMonth') ? ge('incMonth').value : '';
+  var iCat = ge('incCatF') ? ge('incCatF').value : '';
+  var iSrc = ge('incSearch') ? (ge('incSearch').value || '').toLowerCase().trim() : '';
+  var incList = STATE.incomes.filter(function(i) {
+    return matchInc(i, iMon, iCat, iSrc);
+  }).sort(function(a,b){return a.date < b.date ? 1 : -1;});
+
+  setHTML('incT', incList.map(function(i) {
+    return '<tr>' +
+      '<td>' + fmtDate(i.date) + '</td>' +
+      '<td>' + i.desc + '</td>' +
+      '<td>' + i.cat + '</td>' +
+      '<td>' + (i.sub || '') + '</td>' +
+      '<td>' + (i.note || '') + '</td>' +
+      '<td class="tr" style="color:#c0a0f0">' + money(i.amount) + '</td>' +
+      '<td><button class="eb" onclick="editIncome(\'' + i.id + '\')">Editar</button> ' +
+           '<button class="db" onclick="deleteIncome(\'' + i.id + '\')">✕</button></td>' +
+      '</tr>';
+  }).join('') || '<tr><td colspan="7" style="text-align:center;padding:12px;color:#7a9cbf">Nenhuma receita.</td></tr>');
+
+  setHTML('expCatList', STATE.expCats.map(function(c) {
+    return '<div class="catline"><span style="font-size:12px;font-weight:700">' + c + '</span>' +
+      '<button class="db" onclick="delExpCat(\'' + c.replace(/'/g, "\\'") + '\')">✕</button></div>';
+  }).join('') || '<p class="note">Nenhuma categoria.</p>');
+
+  setHTML('incCatList', STATE.incCats.map(function(c) {
+    return '<div class="catline"><span style="font-size:12px;font-weight:700">' + c + '</span>' +
+      '<button class="db" onclick="delIncCat(\'' + c.replace(/'/g, "\\'") + '\')">✕</button></div>';
+  }).join('') || '<p class="note">Nenhuma categoria.</p>');
+
+  updateInfo();
+}
+
+function saveExpense(ev) {
+  ev.preventDefault();
+  var date  = ge('expDate').value;
+  var amount = parseFloat(ge('expValue').value);
+  var desc  = ge('expDesc').value.trim();
+  var cat   = ge('expCat').value;
+  var sub   = ge('expSub').value.trim();
+  var type  = ge('expType').value;
+  var note  = ge('expNote').value.trim();
+  if (!date || !amount || !desc || !cat) return;
+  if (editExpId) {
+    var idx = STATE.expenses.findIndex(function(e) { return e.id === editExpId; });
+    if (idx >= 0) STATE.expenses[idx] = {id: editExpId, date: date, amount: amount, desc: desc, cat: cat, sub: sub, type: type, note: note};
+    editExpId = null;
+  } else {
+    STATE.expenses.push({id: uid(), date: date, amount: amount, desc: desc, cat: cat, sub: sub, type: type, note: note});
+  }
+  saveState();
+  clearExpForm();
+  render();
+}
+
+function clearExpForm() {
+  ge('expDate').value = today();
+  ge('expValue').value = '';
+  ge('expDesc').value = '';
+  ge('expSub').value = '';
+  ge('expNote').value = '';
+  ge('expTitle').textContent = 'Novo Gasto';
+  ge('expAviso').style.display = 'none';
+  editExpId = null;
+}
+
+function cancelExpense() { clearExpForm(); render(); }
+
+function editExpense(id) {
+  var e = STATE.expenses.find(function(x) { return x.id === id; });
+  if (!e) return;
+  editExpId = id;
+  ge('expDate').value = e.date;
+  ge('expValue').value = e.amount;
+  ge('expDesc').value = e.desc;
+  ge('expCat').value = e.cat;
+  ge('expSub').value = e.sub || '';
+  ge('expType').value = e.type;
+  ge('expNote').value = e.note || '';
+  ge('expTitle').textContent = 'Editando: ' + e.desc;
+  ge('expAviso').style.display = 'block';
+  goTab('t3', document.querySelectorAll('.tab')[2]);
+  ge('expDate').scrollIntoView({behavior:'smooth'});
+}
+
+function deleteExpense(id) {
+  if (!confirm('Excluir este gasto?')) return;
+  STATE.expenses = STATE.expenses.filter(function(e) { return e.id !== id; });
+  saveState();
+  render();
+}
+
+function saveIncome(ev) {
+  ev.preventDefault();
+  var date   = ge('incDate').value;
+  var amount = parseFloat(ge('incValue').value);
+  var desc   = ge('incDesc').value.trim();
+  var cat    = ge('incCat').value;
+  var sub    = ge('incSub').value.trim();
+  var note   = ge('incNote').value.trim();
+  if (!date || !amount || !desc || !cat) return;
+  if (editIncId) {
+    var idx = STATE.incomes.findIndex(function(i) { return i.id === editIncId; });
+    if (idx >= 0) STATE.incomes[idx] = {id: editIncId, date: date, amount: amount, desc: desc, cat: cat, sub: sub, note: note};
+    editIncId = null;
+  } else {
+    STATE.incomes.push({id: uid(), date: date, amount: amount, desc: desc, cat: cat, sub: sub, note: note});
+  }
+  saveState();
+  clearIncForm();
+  render();
+}
+
+function clearIncForm() {
+  ge('incDate').value = today();
+  ge('incValue').value = '';
+  ge('incDesc').value = '';
+  ge('incSub').value = '';
+  ge('incNote').value = '';
+  ge('incTitle').textContent = 'Nova Receita';
+  ge('incAviso').style.display = 'none';
+  editIncId = null;
+}
+
+function cancelIncome() { clearIncForm(); render(); }
+
+function editIncome(id) {
+  var i = STATE.incomes.find(function(x) { return x.id === id; });
+  if (!i) return;
+  editIncId = id;
+  ge('incDate').value = i.date;
+  ge('incValue').value = i.amount;
+  ge('incDesc').value = i.desc;
+  ge('incCat').value = i.cat;
+  ge('incSub').value = i.sub || '';
+  ge('incNote').value = i.note || '';
+  ge('incTitle').textContent = 'Editando: ' + i.desc;
+  ge('incAviso').style.display = 'block';
+  goTab('t4', document.querySelectorAll('.tab')[3]);
+  ge('incDate').scrollIntoView({behavior:'smooth'});
+}
+
+function deleteIncome(id) {
+  if (!confirm('Excluir esta receita?')) return;
+  STATE.incomes = STATE.incomes.filter(function(i) { return i.id !== id; });
+  saveState();
+  render();
+}
+
+function addExpCat() {
+  var el = ge('newExpCat');
+  var v = el.value.trim();
+  if (!v) return;
+  if (STATE.expCats.indexOf(v) >= 0) { alert('Categoria já existe.'); return; }
+  STATE.expCats.push(v);
+  el.value = '';
+  saveState();
+  render();
+}
+
+function delExpCat(cat) {
+  var inUse = STATE.expenses.some(function(e) { return e.cat === cat; });
+  if (inUse) { alert('Categoria em uso. Reclassifique os lançamentos antes de excluir.'); return; }
+  if (!confirm('Excluir categoria "' + cat + '"?')) return;
+  STATE.expCats = STATE.expCats.filter(function(c) { return c !== cat; });
+  saveState();
+  render();
+}
+
+function addIncCat() {
+  var el = ge('newIncCat');
+  var v = el.value.trim();
+  if (!v) return;
+  if (STATE.incCats.indexOf(v) >= 0) { alert('Categoria já existe.'); return; }
+  STATE.incCats.push(v);
+  el.value = '';
+  saveState();
+  render();
+}
+
+function delIncCat(cat) {
+  var inUse = STATE.incomes.some(function(i) { return i.cat === cat; });
+  if (inUse) { alert('Categoria em uso. Reclassifique os lançamentos antes de excluir.'); return; }
+  if (!confirm('Excluir categoria "' + cat + '"?')) return;
+  STATE.incCats = STATE.incCats.filter(function(c) { return c !== cat; });
+  saveState();
+  render();
+}
+
+function exportJSON() {
+  var data = JSON.stringify(STATE, null, 2);
+  var blob = new Blob([data], {type: 'application/json'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'financeiro_backup.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function importJSON() {
+  var file = ge('jsonFile').files[0];
+  if (!file) { alert('Selecione um arquivo JSON.'); return; }
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      var p = JSON.parse(e.target.result);
+      STATE = {
+        expenses: Array.isArray(p.expenses) ? p.expenses : clone(SEED_EXP),
+        incomes:  Array.isArray(p.incomes)  ? p.incomes  : clone(SEED_INC),
+        expCats:  Array.isArray(p.expCats)  ? p.expCats  : clone(DEFAULT_EXP_CATS),
+        incCats:  Array.isArray(p.incCats)  ? p.incCats  : clone(DEFAULT_INC_CATS)
+      };
+      saveState();
+      render();
+      alert('Importado com sucesso!');
+    } catch(err) { alert('Arquivo inválido.'); }
+  };
+  reader.readAsText(file);
+}
+
+function restoreSeed() {
+  if (!confirm('Restaurar os dados de exemplo? Os dados atuais serão substituídos.')) return;
+  STATE = freshState();
+  saveState();
+  render();
+}
+
+function clearAll() {
+  if (!confirm('Limpar TODOS os dados? Essa ação não pode ser desfeita.')) return;
+  STATE = {expenses: [], incomes: [], expCats: clone(DEFAULT_EXP_CATS), incCats: clone(DEFAULT_INC_CATS)};
+  saveState();
+  render();
+}
+
+loadState();
+ge('expDate').value = today();
+ge('incDate').value = today();
+render();
+</script>
+</body>
+</html>
+```
