@@ -76,3 +76,63 @@ tr:hover td{background:#0e1d33}
 @media(max-width:700px){.g4{grid-template-columns:1fr 1fr}.g2{grid-template-columns:1fr}.fat-gr{grid-template-columns:1fr 1fr}}
 @media(max-width:480px){.g4,.g3{grid-template-columns:1fr}.tabs{display:grid;grid-template-columns:1fr 1fr 1fr}.tab{font-size:10px;padding:7px 4px;text-align:center}}
 @media print{body{background:#fff;color:#000;padding:0}body *{visibility:hidden!important}.print-only,.print-only *{visibility:visible!important}.print-only{display:block!important;position:absolute;left:0;top:0;width:100%;padding:18px;background:#fff;color:#000}}
+.invoice-mini{
+  background:#0a1628;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:12px 14px;
+  margin-bottom:10px;
+}
+
+.invoice-mini .mini-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
+
+.invoice-mini .mini-title{
+  font-size:11px;
+  font-weight:800;
+  color:var(--muted);
+}
+
+.invoice-mini .mini-value{
+  font-size:18px;
+  font-weight:950;
+  color:var(--text);
+  line-height:1.1;
+}
+
+.invoice-mini .mini-meta{
+  font-size:11px;
+  color:var(--muted);
+  margin-top:4px;
+}
+
+.pdf-box{
+  background:#07111f;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:12px;
+  margin-top:10px;
+}
+
+.pdf-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+
+.pdf-actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:10px;
+}
+
+@media(max-width:700px){
+  .pdf-grid{
+    grid-template-columns:1fr;
+  }
+}
