@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Finanças Pessoais</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>Finanças Pessoais</h1>
+<div class="sub">Seu controle financeiro simplificado.</div>
+
+<div class="tabs">
+  <button class="tab on" onclick="goTab('t1',this)">📊 Resumo</button>
+  <button class="tab" onclick="goTab('t2',this)">💳 Fatura</button>
+  <button class="tab" onclick="goTab('t3',this)">↑ Gastos</button>
+  <button class="tab" onclick="goTab('t4',this)">↓ Receitas</button>
+  <button class="tab" onclick="goTab('t5',this)">🏷 Categorias</button>
+  <button class="tab" onclick="goTab('t6',this)">⚙ Config</button>
+</div>
+
+<!-- T1 RESUMO -->
+<div class="pnl on" id="t1">
+  <div class="row">
+    <select id="sumMonth" onchange="render()" style="flex:1;max-width:180px"></select>
+    <input id="sumSearch" type="text" placeholder="Buscar..." oninput="render()" style="flex:1;max-width:180px"/>
+    <button class="btn soft" onclick="clearFilters()">Limpar</button>
+  </div>
+  <div class="card" id="quickWidget"></div>
+  <div class="g4" id="kpis"></div>
+  <div id="sumInvoice"></div>
+  <div class="g2">
+    <div class="card"><h2>Gastos por categoria</h2><div id="barsExp"></div></div>
+    <div class="card"><h2>Receitas por categoria</h2><div id="barsInc"></div></div>
+  </div>
+  <div class="g2">
+    <div class="card"><h2>Mês a mês</h2><div id="barsMonth"></div></div>
+    <div class="card"><h2>Alertas de orçamento</h2><div id="metaAlerts"></div></div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <h2>Últimos gastos</h2>
+      <div class="tw"><table id="sumExpT"></table></div>
+    </div>
+    <div class="card">
+      <h2>Últimas receitas</h2>
+      <div class="tw"><table id="sumIncT"></table></div>
+    </div>
+  </div>
+</div>
+
+<!-- T2 FATURA -->
+<div class="pnl" id="t2">
+  <div class="row">
+    <select id="invMonth" onchange="render()" style="flex:1;max-width:180px"></select>
+    <input id="invSearch" type="text" placeholder="Buscar na fatura..." oninput="render()" style="flex:1;max-width:180px"/>
+    <button class="btn soft" onclick="printInvoice()">🖨 Imprimir</button>
+  </div>
+  <div id="invSummary"></div>
+  <div class="card">
+    <h2>Lançamentos da fatura</h2>
+    <div class="tw"><table id="invT"></table></div>
+  </div>
+</div>
+
+<!-- T3 GASTOS -->
+<div class="pnl" id="t3">
+  <div class="card">
+    <h2 id="expTitle">Novo Gasto</h2>
+    <div class="aviso" id="expAviso">✏️ Editando — salve ou cancele</div>
+    <form onsubmit="saveExpense(event)" autocomplete="off">
+      <div class="g2">
+        <div class="fld"><label>Data</label><input type="date" id="expDate" required/></div>
+        <div class="fld"><label>Valor R$</label><input type="number" id="expValue" step="0.01" placeholder="0,00" required/></div>
+      </div>
+      <div class="fld">
+        <label>Descrição</label>
+        <input type="text" id="expDesc" placeholder="Ex.: Mercado..." oninput="suggestCat()" required/>
+        <div class="hint" id="expHint"></div>
+      </div>
+      <div class="g2">
+        <div class="fld"><label>Categoria</label><select id="expCat" required></select></div>
+        <div class="fld"><label>Subcategoria</label><input type="text" id="expSub" placeholder="Opcional"/></div>
+      </div>
+      <div class="g2">
+        <div class="fld">
+          <label>Tipo de pagamento</label>
+          <select id="expType">
+            <option value="cartao">Cartão de crédito</option>
+            <option value="debito">Débito</option>
+            <option value="pix">PIX</option>
+            <option value="dinheiro">Dinheiro</option>
+            <option value="fixo">Fixo/Boleto</option>
+            <option value="outros">Outros</option>
+          </select>
+        </div>
+        <div class="fld"><label>Parcela / Obs.</label><input type="text" id="expNote" placeholder="Ex: 01/10"/></div>
+      </div>
+      <div class="row">
+        <button class="btn g" type="submit">✓ Salvar</button>
+        <button class="btn r" type="button" onclick="cancelExpense()">✕ Cancelar</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="card">
+    <h2>Todos os gastos</h2>
+    <div class="row">
+      <select id="expMonth" onchange="render()" style="flex:1;max-width:140px"></select>
+      <select id="expCatF" onchange="render()" style="flex:1;max-width:140px"></select>
+      <select id="expTypeF" onchange="render()" style="flex:1;max-width:140px">
+        <option value="">Todos os tipos</option>
+        <option value="cartao">Cartão</option>
+        <option value="debito">Débito</option>
+        <option value="pix">PIX</option>
+        <option value="dinheiro">Dinheiro</option>
+        <option value="fixo">Fixo/Boleto</option>
+      </select>
+      <input id="expSearch" type="text" placeholder="Buscar..." oninput="render()" style="flex:1;max-width:140px"/>
+    </div>
+    <div class="tw"><table id="expT"></table></div>
+  </div>
+</div>
+
+<!-- T4 RECEITAS -->
+<div class="pnl" id="t4">
+  <div class="card">
+    <h2 id="incTitle">Nova Receita</h2>
+    <div class="aviso" id="incAviso">✏️ Editando — salve ou cancele</div>
+    <form onsubmit="saveIncome(event)" autocomplete="off">
+      <div class="g2">
+        <div class="fld"><label>Data</label><input type="date" id="incDate" required/></div>
+        <div class="fld"><label>Valor R$</label><input type="number" id="incValue" step="0.01" placeholder="0,00" required/></div>
+      </div>
+      <div class="fld"><label>Descrição</label><input type="text" id="incDesc" placeholder="Fonte da receita..." required/></div>
+      <div class="g2">
+        <div class="fld"><label>Categoria</label><select id="incCat" required></select></div>
+        <div class="fld"><label>Subcategoria</label><input type="text" id="incSub" placeholder="Opcional"/></div>
+      </div>
+      <div class="fld"><label>Observação</label><textarea id="incNote" placeholder="Opcional"></textarea></div>
+      <div class="row">
+        <button class="btn v" type="submit">✓ Salvar</button>
+        <button class="btn r" type="button" onclick="cancelIncome()">✕ Cancelar</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="card">
+    <h2>Todas as receitas</h2>
+    <div class="row">
+      <select id="incMonth" onchange="render()" style="flex:1;max-width:180px"></select>
+      <select id="incCatF" onchange="render()" style="flex:1;max-width:180px"></select>
+      <input id="incSearch" type="text" placeholder="Buscar..." oninput="render()" style="flex:1;max-width:180px"/>
+    </div>
+    <div class="tw"><table id="incT"></table></div>
+  </div>
+</div>
+
+<!-- T5 CATEGORIAS -->
+<div class="pnl" id="t5">
+  <div class="card">
+    <h2>Categorias de gastos</h2>
+    <div class="row" style="margin-bottom:10px">
+      <input type="text" id="newExpCat" placeholder="Nova categoria..." style="flex:1;max-width:260px"/>
+      <button class="btn" type="button" onclick="addExpCat()">+ Adicionar</button>
+    </div>
+    <div id="expCatList"></div>
+  </div>
+
+  <div class="card">
+    <h2>Categorias de receitas</h2>
+    <div class="row" style="margin-bottom:10px">
+      <input type="text" id="newIncCat" placeholder="Nova categoria..." style="flex:1;max-width:260px"/>
+      <button class="btn v" type="button" onclick="addIncCat()">+ Adicionar</button>
+    </div>
+    <div id="incCatList"></div>
+  </div>
+</div>
+
+<!-- T6 CONFIG -->
+<div class="pnl" id="t6">
+  <div class="card">
+    <h2>Configurações do Cartão</h2>
+    <form onsubmit="saveCardSettings(event)" autocomplete="off">
+      <div class="fld"><label>Nome do Cartão</label><input type="text" id="cfgName" required/></div>
+      <div class="g3">
+        <div class="fld"><label>Dia de Fechamento</label><input type="number" id="cfgClose" min="1" max="28" required/></div>
+        <div class="fld"><label>Dia de Vencimento</label><input type="number" id="cfgDue" min="1" max="28" required/></div>
+        <div class="fld"><label>Limite R$</label><input type="number" id="cfgLimit" step="0.01" placeholder="0,00"/></div>
+      </div>
+      <div class="row">
+        <button class="btn g" type="submit">✓ Salvar Configurações</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="card">
+    <h2>Backup e Dados</h2>
+    <div class="row">
+      <button class="btn" onclick="exportJSON()">Exportar JSON</button>
+      <button class="btn" onclick="exportCSV()">Exportar CSV</button>
+      <input type="file" id="jsonFile" accept=".json" style="flex:1;max-width:200px"/>
+      <button class="btn soft" onclick="importJSON()">Importar JSON</button>
+    </div>
+    <div class="row">
+      <button class="btn r" onclick="restoreSeed()">Restaurar dados de exemplo</button>
+      <button class="btn r" onclick="clearAll()">Limpar TODOS os dados</button>
+    </div>
+    <div id="storageInfo" style="margin-top:10px"></div>
+  </div>
+</div>
+
+<!-- PRINT ONLY AREA -->
+<div class="print-only" id="printArea"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
