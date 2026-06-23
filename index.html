@@ -40,97 +40,73 @@
   <div class="g2">
     <div class="card">
       <h2>Últimos gastos</h2>
-      <div class="tw"><table id="sumExpT"></table></div>
+      <div class="tw"><table><table id="sumExpT"></table></div>
     </div>
     <div class="card">
       <h2>Últimas receitas</h2>
-      <div class="tw"><table id="sumIncT"></table></div>
+      <div class="tw"><table><table id="sumIncT"></table></div>
     </div>
   </div>
 </div>
 
-<div class="card">
-  <h2>Importar PDF da fatura</h2>
-  <div class="row">
-    <input type="file" id="pdfFile" accept="application/pdf" style="flex:1;max-width:260px">
-    <button class="btn soft" type="button" onclick="analyzePdfInvoice()">Analisar PDF</button>
-  </div>
-  <div class="note" id="pdfUploadHint">
-    Envie um PDF com texto para extrair os dados e revisar antes de salvar.
-  </div>
-  <div id="pdfPreview"></div>
-</div>
-  
 <!-- T2 FATURA -->
 <div class="pnl" id="t2">
+  <div class="card">
+    <h2>Importar PDF da fatura</h2>
+    <div class="row">
+      <input type="file" id="pdfFile" accept="application/pdf" style="flex:1;max-width:260px">
+      <button class="btn soft" type="button" onclick="analyzePdfInvoice()">Analisar PDF</button>
+    </div>
+    <div class="note" id="pdfUploadHint">
+      Envie um PDF com texto para extrair os dados e revisar antes de salvar.
+    </div>
+    <div id="pdfPreview"></div>
+  </div>
   <div class="row">
     <select id="invMonth" onchange="render()" style="flex:1;max-width:180px"></select>
     <input id="invSearch" type="text" placeholder="Buscar na fatura..." oninput="render()" style="flex:1;max-width:180px"/>
     <button class="btn soft" onclick="printInvoice()">🖨 Imprimir</button>
   </div>
   <div id="invSummary"></div>
-  <div class="card">
-    <h2>Lançamentos da fatura</h2>
-    <div class="tw"><table id="invT"></table></div>
-  </div>
+  <div class="tw"><table><table id="invT"></table></div>
 </div>
 
 <!-- T3 GASTOS -->
 <div class="pnl" id="t3">
   <div class="card">
     <h2 id="expTitle">Novo Gasto</h2>
-    <div class="aviso" id="expAviso">✏️ Editando — salve ou cancele</div>
     <form onsubmit="saveExpense(event)" autocomplete="off">
-      <div class="g2">
-        <div class="fld"><label>Data</label><input type="date" id="expDate" required/></div>
-        <div class="fld"><label>Valor R$</label><input type="number" id="expValue" step="0.01" placeholder="0,00" required/></div>
-      </div>
-      <div class="fld">
-        <label>Descrição</label>
-        <input type="text" id="expDesc" placeholder="Ex.: Mercado..." oninput="suggestCat()" required/>
-        <div class="hint" id="expHint"></div>
-      </div>
+      <div class="fld"><label>Data</label><input type="date" id="expDate" required/></div>
+      <div class="fld"><label>Valor R$</label><input type="number" id="expValue" step="0.01" placeholder="0,00" required/></div>
+      <div class="fld"><label>Descrição</label><input type="text" id="expDesc" oninput="suggestCat()" placeholder="Ex: Supermercado, Uber" required/></div>
+      <div class="hint" id="expHint"></div>
       <div class="g2">
         <div class="fld"><label>Categoria</label><select id="expCat" required></select></div>
-        <div class="fld"><label>Subcategoria</label><input type="text" id="expSub" placeholder="Opcional"/></div>
+        <div class="fld"><label>Subcategoria</label><input type="text" id="expSub" placeholder="Ex: Compras, Aplicativo"/></div>
       </div>
-      <div class="g2">
-        <div class="fld">
-          <label>Tipo de pagamento</label>
-          <select id="expType">
-            <option value="cartao">Cartão de crédito</option>
-            <option value="debito">Débito</option>
-            <option value="pix">PIX</option>
-            <option value="dinheiro">Dinheiro</option>
-            <option value="fixo">Fixo/Boleto</option>
-            <option value="outros">Outros</option>
-          </select>
-        </div>
-        <div class="fld"><label>Parcela / Obs.</label><input type="text" id="expNote" placeholder="Ex: 01/10"/></div>
-      </div>
-      <div class="row">
-        <button class="btn g" type="submit">✓ Salvar</button>
-        <button class="btn r" type="button" onclick="cancelExpense()">✕ Cancelar</button>
-      </div>
-    </form>
-  </div>
-
-  <div class="card">
-    <h2>Todos os gastos</h2>
-    <div class="row">
-      <select id="expMonth" onchange="render()" style="flex:1;max-width:140px"></select>
-      <select id="expCatF" onchange="render()" style="flex:1;max-width:140px"></select>
-      <select id="expTypeF" onchange="render()" style="flex:1;max-width:140px">
-        <option value="">Todos os tipos</option>
-        <option value="cartao">Cartão</option>
-        <option value="debito">Débito</option>
+      <div class="fld"><label>Tipo de Pagamento</label><select id="expType" required>
+        <option value="cartao">Cartão de Crédito</option>
+        <option value="debito">Cartão de Débito</option>
         <option value="pix">PIX</option>
         <option value="dinheiro">Dinheiro</option>
-        <option value="fixo">Fixo/Boleto</option>
-      </select>
-      <input id="expSearch" type="text" placeholder="Buscar..." oninput="render()" style="flex:1;max-width:140px"/>
+        <option value="fixo">Fixo (boleto, aluguel)</option>
+      </select></div>
+      <div class="fld"><label>Observações</label><textarea id="expNote"></textarea></div>
+      <div class="row">
+        <button class="btn g" type="submit">✓ Salvar Gasto</button>
+        <button class="btn soft" type="button" onclick="cancelExpense()">✕ Cancelar</button>
+      </div>
+      <div class="note" id="expAviso" style="display:none">Você está editando um gasto existente.</div>
+    </form>
+  </div>
+  <div class="card">
+    <h2>Histórico de Gastos</h2>
+    <div class="row">
+      <select id="expCatF" onchange="render()" style="flex:1;max-width:180px"></select>
+      <select id="expTypeF" onchange="render()" style="flex:1;max-width:180px"></select>
+      <input id="expSearch" type="text" placeholder="Buscar..." oninput="render()" style="flex:1;max-width:180px"/>
     </div>
-    <div class="tw"><table id="expT"></table></div>
+    <div class="tw"><table><table id="expT"></table></div>
   </div>
 </div>
 
@@ -138,33 +114,29 @@
 <div class="pnl" id="t4">
   <div class="card">
     <h2 id="incTitle">Nova Receita</h2>
-    <div class="aviso" id="incAviso">✏️ Editando — salve ou cancele</div>
     <form onsubmit="saveIncome(event)" autocomplete="off">
-      <div class="g2">
-        <div class="fld"><label>Data</label><input type="date" id="incDate" required/></div>
-        <div class="fld"><label>Valor R$</label><input type="number" id="incValue" step="0.01" placeholder="0,00" required/></div>
-      </div>
-      <div class="fld"><label>Descrição</label><input type="text" id="incDesc" placeholder="Fonte da receita..." required/></div>
+      <div class="fld"><label>Data</label><input type="date" id="incDate" required/></div>
+      <div class="fld"><label>Valor R$</label><input type="number" id="incValue" step="0.01" placeholder="0,00" required/></div>
+      <div class="fld"><label>Descrição</label><input type="text" id="incDesc" placeholder="Ex: Salário, Freelance" required/></div>
       <div class="g2">
         <div class="fld"><label>Categoria</label><select id="incCat" required></select></div>
-        <div class="fld"><label>Subcategoria</label><input type="text" id="incSub" placeholder="Opcional"/></div>
+        <div class="fld"><label>Subcategoria</label><input type="text" id="incSub" placeholder="Ex: Mensal, Projeto X"/></div>
       </div>
-      <div class="fld"><label>Observação</label><textarea id="incNote" placeholder="Opcional"></textarea></div>
+      <div class="fld"><label>Observações</label><textarea id="incNote"></textarea></div>
       <div class="row">
-        <button class="btn v" type="submit">✓ Salvar</button>
-        <button class="btn r" type="button" onclick="cancelIncome()">✕ Cancelar</button>
+        <button class="btn g" type="submit">✓ Salvar Receita</button>
+        <button class="btn soft" type="button" onclick="cancelIncome()">✕ Cancelar</button>
       </div>
+      <div class="note" id="incAviso" style="display:none">Você está editando uma receita existente.</div>
     </form>
   </div>
-
   <div class="card">
-    <h2>Todas as receitas</h2>
+    <h2>Histórico de Receitas</h2>
     <div class="row">
-      <select id="incMonth" onchange="render()" style="flex:1;max-width:180px"></select>
       <select id="incCatF" onchange="render()" style="flex:1;max-width:180px"></select>
       <input id="incSearch" type="text" placeholder="Buscar..." oninput="render()" style="flex:1;max-width:180px"/>
     </div>
-    <div class="tw"><table id="incT"></table></div>
+    <div class="tw"><table><table id="incT"></table></div>
   </div>
 </div>
 
@@ -230,7 +202,7 @@
   pdfjsLib.GlobalWorkerOptions.workerSrc =
     "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 </script>
-  
-<script src="script.js"></script>
+
+<script src="./script.js?v=8"></script>
 </body>
 </html>
