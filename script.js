@@ -292,7 +292,7 @@ function render(){
   STATE.expenses.forEach(function(x){mMapE[monthKey(x.date)]=(mMapE[monthKey(x.date)]||0)+(+x.amount||0);});
   STATE.incomes.forEach(function(x){mMapI[monthKey(x.date)]=(mMapI[monthKey(x.date)]||0)+(+x.amount||0);});
   var mList=Object.keys(mMapE).concat(Object.keys(mMapI)).filter(function(v,i,a){return a.indexOf(v)===i;}).sort();
-  var mMax=mList.length?Math.max.apply(null,mList.map(function(m){return Math.max(mMapE[m]||0,mMapI[m]||0);})):1;
+  var mMax=mList.length?Math.max.apply(null,mList.map(function(m){return Math.max(mMapE[m]||0,mMapI[m]||0);})):'1';
   setHTML('barsMonth',mList.slice(-6).map(function(m){
     var pE=Math.min(100,((mMapE[m]||0)/mMax)*100).toFixed(1);
     var pI=Math.min(100,((mMapI[m]||0)/mMax)*100).toFixed(1);
