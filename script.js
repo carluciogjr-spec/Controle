@@ -1,3 +1,32 @@
+let pendingPdf = null;
+
+function escHtml(s){
+  return String(s ?? '').replace(/[&<>"']/g, function(m){
+    return ({
+      '&':'&',
+      '<':'<',
+      '>':'>',
+      '"':'&quot;',
+      "'":'&#39;'
+    })[m];
+  });
+}
+
+function parseMoney(v){
+  return parseFloat(
+    String(v ?? '')
+      .replace(/\s/g,'')
+      .replace(/[R$]/g,'')
+      .replace(/\./g,'')
+      .replace(',', '.')
+      .replace(/[^\d.-]/g,'')
+  ) || 0;
+}
+
+function dateBRtoISO(v){
+  const m = String(v ?? '').match(/(\d{2})[\/\-](\d{2})[\/\-](\d{4})/);
+  return m ? `${m[3]}-${m[2]}-${m[1]}` : today();
+}
 const SK = 'cfv7'; // Storage Key
 const DEFAULT_EXP_CATS = ['Alimentação', 'Transporte e veículos', 'Moradia', 'Lazer e entretenimento', 'Saúde', 'Educação', 'Assinaturas', 'Pets', 'Outros'];
 const DEFAULT_INC_CATS = ['Salário', 'Freelance', 'Investimentos', 'Presente', 'Outros'];
@@ -239,15 +268,20 @@ function render(){
   );
 
   // Invoice summary in resumo
-  setHTML('sumInvoice',
-    '<div class="fat"><h2>💳 Fatura '+monthLabel(invMk)+' · '+STATE.card.name+'</h2>'+
-    '<div class="fat-tot"><div class="fv">'+money(tInv)+'</div><div class="fi">'+ivR.length+' compras · Vence em '+fmtDate(fi.due)+'</div></div>'+
-    '<div class="fat-gr">'+
-    '<div><div class="fdl">Abertura</div><div class="fdv">'+fmtDate(fi.open)+'</div></div>'+
-    '<div><div class="fdl">Fechamento</div><div class="fdv">'+fmtDate(fi.close)+'</div></div>'+
-    '<div><div class="fdl">Vencimento</div><div class="fdv" style="color:#f0c040">'+fmtDate(fi.due)+'</div></div>'+
-    '</div></div>'
-  );
+ setHTML('sumInvoice',
+  '<div class="invoice-mini">' +
+    '<div class="mini-top">' +
+      '<div>' +
+        '<div class="mini-title">Fatura atual</div>' +
+        '<div class="mini-value">' + money(tInv) + '</div>' +
+      '</div>' +
+      '<span class="pill wn">' + fmtDate(fi.due) + '</span>' +
+    '</div>' +
+    '<div class="mini-meta">' +
+      ivR.length + ' compras · Fechamento ' + fmtDate(fi.close) + ' · Vencimento ' + fmtDate(fi.due) +
+    '</div>' +
+  '</div>'
+);
 
   // Bars exp/inc
   renderBarRow('barsExp',groupByCategory(fE),'');
@@ -682,6 +716,199 @@ function clearAll(){
   };
   saveState();
   render();
+}
+
+async function extractPdfText(file){
+  const buffer = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({ data: buffer }).promise;
+  const pages = [];
+
+  for(let p = 1; p <= pdf.numPages; p++){
+    const page = await pdf.getPage(p);
+    const content = await page.getTextContent();
+    const text = content.items.map(i => i.str).join(' ');
+    pages.push(text);
+  }
+
+  return pages.join('\n');
+}
+
+function inferPdfData(text, fileName){
+  const clean = String(text || '').replace(/\s+/g, ' ').trim();
+
+  const dateMatch = clean.match(/
+\b
+(\d{2}[\/\-]\d{2}[\/\-]\d{4})
+\b
+/);
+  const moneyMatches = [...clean.matchAll(/R\$\s?(\d{1,3}(?:\.\d{3})*(?:,\d{2})?|\d+(?:,\d{2})?)/g)];
+
+  const amount = moneyMatches.length
+    ? parseMoney(moneyMatches[moneyMatches.length - 1][1])
+    : 0;
+
+  const rawName = String(fileName || '')
+    .replace(/\.pdf
+$
+/i, '')
+    .replace(/[_-]+/g, ' ')
+    .trim();
+
+  let desc = rawName || 'Documento importado';
+  const lines = clean.split(/\s{2,}/).map(x => x.trim()).filter(Boolean);
+
+  const candidate = lines.find(l =>
+    l.length > 4 &&
+    !/
+^
+(r\$|\d|cpf|cnpj|comprovante|fatura|boleto|pagina|page)/i.test(l)
+  );
+
+  if(candidate){
+    desc = candidate;
+  }
+
+  const sug = smartSuggest(desc) || null;
+
+  return {
+    date: dateMatch ? dateBRtoISO(dateMatch[1]) : today(),
+    amount,
+    desc,
+    cat: sug ? sug.cat : 'Outros',
+    sub: sug ? sug.sub : '',
+    raw: clean
+  };
+}
+
+function renderPdfPreview(data){
+  if(!data){
+    setHTML('pdfPreview', '');
+    if(ge('pdfUploadHint')){
+      ge('pdfUploadHint').textContent =
+        'Envie um PDF com texto para extrair os dados e revisar antes de salvar.';
+    }
+    return;
+  }
+
+  const catOptions = ['<option value="">Selecione</option>']
+    .concat(STATE.expCats.map(function(c){
+      return '<option value="' + escHtml(c) + '"' + (c === data.cat ? ' selected' : '') + '>' + escHtml(c) + '</option>';
+    }))
+    .join('');
+
+  setHTML('pdfPreview',
+    '<div class="pdf-box">' +
+      '<div class="pdf-grid">' +
+        '<div class="fld">' +
+          '<label>Data</label>' +
+          '<input id="pdfDate" type="date" value="' + escHtml(data.date) + '">' +
+        '</div>' +
+        '<div class="fld">' +
+          '<label>Valor R$</label>' +
+          '<input id="pdfAmount" type="number" step="0.01" value="' + escHtml(data.amount || '') + '">' +
+        '</div>' +
+        '<div class="fld">' +
+          '<label>Descrição</label>' +
+          '<input id="pdfDesc" type="text" value="' + escHtml(data.desc || '') + '">' +
+        '</div>' +
+        '<div class="fld">' +
+          '<label>Categoria</label>' +
+          '<select id="pdfCat">' + catOptions + '</select>' +
+        '</div>' +
+        '<div class="fld" style="grid-column:1/-1">' +
+          '<label>Subcategoria</label>' +
+          '<input id="pdfSub" type="text" value="' + escHtml(data.sub || '') + '">' +
+        '</div>' +
+      '</div>' +
+      '<div class="fld" style="margin-top:8px">' +
+        '<label>Texto extraído</label>' +
+        '<textarea id="pdfRaw" readonly>' + escHtml(data.raw || '') + '</textarea>' +
+      '</div>' +
+      '<div class="pdf-actions">' +
+        '<button class="btn g" type="button" onclick="confirmPdfImport()">✓ Confirmar</button>' +
+        '<button class="btn r" type="button" onclick="cancelPdfImport()">✕ Cancelar</button>' +
+      '</div>' +
+    '</div>'
+  );
+
+  if(ge('pdfUploadHint')){
+    ge('pdfUploadHint').textContent =
+      'Extração concluída. Revise os campos e confirme antes de salvar.';
+  }
+}
+
+async function analyzePdfInvoice(){
+  const fileEl = ge('pdfFile');
+  const file = fileEl && fileEl.files && fileEl.files[0];
+
+  if(!file){
+    alert('Selecione um PDF.');
+    return;
+  }
+
+  if(typeof pdfjsLib === 'undefined'){
+    alert('A biblioteca de PDF não carregou.');
+    return;
+  }
+
+  try{
+    if(ge('pdfUploadHint')){
+      ge('pdfUploadHint').textContent = 'Lendo PDF...';
+    }
+
+    const text = await extractPdfText(file);
+    pendingPdf = inferPdfData(text, file.name);
+    pendingPdf.fileName = file.name;
+
+    renderPdfPreview(pendingPdf);
+  }catch(err){
+    console.error(err);
+    alert('Não consegui ler esse PDF.');
+    if(ge('pdfUploadHint')){
+      ge('pdfUploadHint').textContent = 'Falha ao ler o PDF.';
+    }
+  }
+}
+
+function confirmPdfImport(){
+  if(!pendingPdf) return;
+
+  const date = ge('pdfDate').value;
+  const amount = parseFloat(ge('pdfAmount').value);
+  const desc = ge('pdfDesc').value.trim();
+  const cat = ge('pdfCat').value;
+  const sub = ge('pdfSub').value.trim();
+
+  if(!date || !amount || !desc || !cat){
+    alert('Preencha data, valor, descrição e categoria.');
+    return;
+  }
+
+  STATE.expenses.push({
+    id: uid(),
+    date: date,
+    amount: amount,
+    desc: desc,
+    cat: cat,
+    sub: sub,
+    type: 'cartao',
+    note: 'Importado de PDF'
+  });
+
+  learn(desc, cat, sub);
+  saveState();
+
+  pendingPdf = null;
+  if(ge('pdfFile')) ge('pdfFile').value = '';
+  renderPdfPreview(null);
+  render();
+  goTab('t3', document.querySelectorAll('.tab')[2]);
+}
+
+function cancelPdfImport(){
+  pendingPdf = null;
+  if(ge('pdfFile')) ge('pdfFile').value = '';
+  renderPdfPreview(null);
 }
 
 // ── INITIALIZATION ─────────────────────────────────────────────
