@@ -49,6 +49,17 @@
   </div>
 </div>
 
+<div class="card">
+  <h2>Importar PDF da fatura</h2>
+  <div class="row">
+    <input type="file" id="pdfFile" accept="application/pdf" style="flex:1;max-width:260px">
+    <button class="btn soft" type="button" onclick="analyzePdfInvoice()">Analisar PDF</button>
+  </div>
+  <div class="note" id="pdfUploadHint">
+    Envie um PDF com texto para extrair os dados e revisar antes de salvar.
+  </div>
+  <div id="pdfPreview"></div>
+</div>
 <!-- T2 FATURA -->
 <div class="pnl" id="t2">
   <div class="row">
