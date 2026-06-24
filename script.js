@@ -3,9 +3,9 @@ let pendingPdf = null;
 function escHtml(s){
   return String(s ?? '').replace(/[&<>"']/g, function(m){
     return ({
-      '&':'&',
-      '<':'<',
-      '>':'>',
+      '&':'&amp;', // Corrigido para &amp;
+      '<':'&lt;',   // Corrigido para &lt;
+      '>':'&gt;',   // Corrigido para &gt;
       '"':'&quot;',
       "'":'&#39;'
     })[m];
